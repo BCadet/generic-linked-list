@@ -12,11 +12,20 @@
 
 static gll_node_t *gll_findNode(gll_t *, int);
 static gll_node_t *gll_initNode(void *);
+static gll_node_t *allocate_node();
+
+static struct node_allocator
+{
+	bool allocated;
+	gll_node_t node;
+
+} NodePool[MAX_NODE_POOL_SIZE] = {0};
 
 /*  
  * Initialize a new list
  * returns:   pointer to new list
  */
+#ifdef USE_MALLOC
 gll_t *gll_init() 
 {
   gll_t *list = (gll_t *) malloc(sizeof(gll_t));
@@ -25,7 +34,15 @@ gll_t *gll_init()
   list->last = NULL;
   return list;
 }
-
+#else
+gll_t *gll_init(gll_t *list) 
+{
+  list->size = 0;
+  list->first = NULL;
+  list->last = NULL;
+  return list;
+}
+#endif
 /*
  * Helper function:
  * Initialize a new node
@@ -34,11 +51,40 @@ gll_t *gll_init()
  */
 static gll_node_t *gll_initNode(void *data) 
 {
+  #ifdef USE_MALLOC
   gll_node_t *node = (gll_node_t *) malloc(sizeof(gll_node_t));
+  #else
+  gll_node_t *node = allocate_node();
+  #endif
   node->data = data;
   node->prev = NULL;
   node->next = NULL;
   return node;
+}
+
+static gll_node_t *allocate_node()
+{
+	for(int i = 0; i < MAX_NODE_POOL_SIZE; i++)
+	{
+		if(!NodePool[i].allocated)
+		{
+			NodePool[i].allocated = true;
+      memset(&NodePool[i].node, 0x00, sizeof(gll_node_t));
+			return &NodePool[i].node;
+		}
+	}
+  return NULL;
+}
+
+static void free_nodeNum(gll_node_t *node)
+{
+  for(int i = 0; i < MAX_NODE_POOL_SIZE; i++)
+	{
+		if(&NodePool[i].node == node)
+		{
+			NodePool[i].allocated = false;
+		}
+	}
 }
 
 /*
@@ -264,7 +310,11 @@ void *gll_remove(gll_t *list, int pos)
     currNode->next->prev = currNode->prev;
 
   list->size--;
+  #ifdef USE_MALLOC
   free(currNode);
+  #else
+  free_nodeNum(currNode);
+  #endif
   return data;
 }
 
@@ -357,7 +407,11 @@ void gll_clear(gll_t *list)
 
   while(currNode != NULL) {
     nextNode = currNode->next;
+    #ifdef USE_MALLOC
     free(currNode);
+    #else
+    free_nodeNum(currNode);
+    #endif
     currNode = nextNode;
   }
 
@@ -366,6 +420,7 @@ void gll_clear(gll_t *list)
   list->size = 0;
 }
 
+#ifdef USE_MALLOC
 /*
  * destroys a list and frees all list related memory
  * Does not touch the data stored at the nodes!
@@ -383,3 +438,4 @@ void gll_destroy(gll_t *list)
   }
   free(list);
 } 
+#endif

@@ -2,6 +2,15 @@
  * File:     gll.h
  * Author:   Philip Klostermann 
  */
+#include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
+
+// #define USE_MALLOC
+
+#ifndef MAX_NODE_POOL_SIZE
+#define MAX_NODE_POOL_SIZE  255
+#endif
 
 /*
  * Node Type: gll_node_t struct

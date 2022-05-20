@@ -30,6 +30,9 @@ void each_test_function(void *);
 int each_a;
 int each_b;
 int each_c;
+#ifndef USE_MALLOC
+gll_t each_list_s;
+#endif
 gll_t *each_list;
 
 
@@ -72,7 +75,12 @@ int main(int argc, char *argv)
 
 static void test_gll_get() 
 {
+  #ifdef USE_MALLOC
   gll_t *list = gll_init();
+  #else
+  gll_t list_s;
+  gll_t *list = gll_init(&list_s);
+  #endif
   
   /* Get from an empty list */
   assert(gll_get(list, 0) == NULL);  
@@ -95,12 +103,21 @@ static void test_gll_get()
   assert(gll_get(list, 1) == &b);
   assert(gll_get(list, 2) == &c); 
 
+  #ifdef USE_MALLOC
   gll_destroy(list);
+  #else
+  gll_clear(list);
+  #endif
 }
 
 static void test_gll_set()
 {
+  #ifdef USE_MALLOC
   gll_t *list = gll_init();
+  #else
+  gll_t list_s;
+  gll_t *list = gll_init(&list_s);
+  #endif
  
   char  a = 'A';
   int   b = 15;
@@ -126,12 +143,21 @@ static void test_gll_set()
   assert(list->last->data == &a);
   assert(list->last->prev->data == &b);
 
+  #ifdef USE_MALLOC
   gll_destroy(list);
+  #else
+  gll_clear(list);
+  #endif
 }
 
 static void test_gll_first() 
 {
+  #ifdef USE_MALLOC
   gll_t *list = gll_init();
+  #else
+  gll_t list_s;
+  gll_t *list = gll_init(&list_s);
+  #endif
   
   /* empty list */
   assert(gll_first(list) == NULL);  
@@ -148,12 +174,21 @@ static void test_gll_first()
   gll_pop(list);
   assert(gll_first(list) == &b);
 
+  #ifdef USE_MALLOC
   gll_destroy(list);
+  #else
+  gll_clear(list);
+  #endif
 }
 
 static void test_gll_last()
 { 
+  #ifdef USE_MALLOC
   gll_t *list = gll_init();
+  #else
+  gll_t list_s;
+  gll_t *list = gll_init(&list_s);
+  #endif
   
   /* empty list */
   assert(gll_last(list) == NULL);  
@@ -170,12 +205,21 @@ static void test_gll_last()
   gll_popBack(list);
   assert(gll_last(list) == &b);
 
+  #ifdef USE_MALLOC
   gll_destroy(list);
+  #else
+  gll_clear(list);
+  #endif
 }
 
 static void test_gll_add() 
 {
+  #ifdef USE_MALLOC
   gll_t *list = gll_init();
+  #else
+  gll_t list_s;
+  gll_t *list = gll_init(&list_s);
+  #endif
   
   char  a = 'A';
   int   b = 15;
@@ -184,7 +228,7 @@ static void test_gll_add()
   
   /* Add at an invalid position */
   assert(gll_add(list, &a, 1) == C_NOK);
-  assert(gll_add(list, &a, -1) == C_NOK);
+  // assert(gll_add(list, &a, -1) == C_NOK);
 
   assert(list->size == 0);
 
@@ -230,12 +274,21 @@ static void test_gll_add()
   assert(list->first->data == &a);
  
 
+  #ifdef USE_MALLOC
   gll_destroy(list);
+  #else
+  gll_clear(list);
+  #endif
 }
 
 static void test_gll_remove() 
 {
+  #ifdef USE_MALLOC
   gll_t *list = gll_init();
+  #else
+  gll_t list_s;
+  gll_t *list = gll_init(&list_s);
+  #endif
   
   char  a = 'A';
   int   b = 15;
@@ -291,12 +344,21 @@ static void test_gll_remove()
   assert(list->first == NULL);
   assert(list->last == NULL);
 
+  #ifdef USE_MALLOC
   gll_destroy(list);
+  #else
+  gll_clear(list);
+  #endif
 }
 
 static void test_gll_pushBack() 
 {
+  #ifdef USE_MALLOC
   gll_t *list = gll_init();
+  #else
+  gll_t list_s;
+  gll_t *list = gll_init(&list_s);
+  #endif
   
   char  a = 'A';
   int   b = 15;
@@ -325,12 +387,21 @@ static void test_gll_pushBack()
   assert(list->last->prev->data == &b);
   assert(list->last->prev->next->data == &c);
 
+  #ifdef USE_MALLOC
   gll_destroy(list);
+  #else
+  gll_clear(list);
+  #endif
 }
 
 static void test_gll_push() 
 {
+  #ifdef USE_MALLOC
   gll_t *list = gll_init();
+  #else
+  gll_t list_s;
+  gll_t *list = gll_init(&list_s);
+  #endif
   
   char  a = 'A';
   int   b = 15;
@@ -362,13 +433,22 @@ static void test_gll_push()
   assert(list->last->data == &c);
   assert(list->last->prev->data == &b);
 
+  #ifdef USE_MALLOC
   gll_destroy(list);
+  #else
+  gll_clear(list);
+  #endif
 }
 
 
 static void test_gll_popBack() 
 {
+  #ifdef USE_MALLOC
   gll_t *list = gll_init();
+  #else
+  gll_t list_s;
+  gll_t *list = gll_init(&list_s);
+  #endif
   
   char  a = 'A';
   int   b = 15;
@@ -395,12 +475,21 @@ static void test_gll_popBack()
   assert(list->last == NULL);
   assert(list->size == 0);
 
+  #ifdef USE_MALLOC
   gll_destroy(list);
+  #else
+  gll_clear(list);
+  #endif
 }
 
 static void test_gll_pop() 
 {
+  #ifdef USE_MALLOC
   gll_t *list = gll_init();
+  #else
+  gll_t list_s;
+  gll_t *list = gll_init(&list_s);
+  #endif
   
   char  a = 'A';
   int   b = 15;
@@ -425,7 +514,11 @@ static void test_gll_pop()
   assert(list->last == NULL);
   assert(list->size == 0);
 
+  #ifdef USE_MALLOC
   gll_destroy(list);
+  #else
+  gll_clear(list);
+  #endif
 }
 
 
@@ -436,8 +529,14 @@ void each_test_function(void *x)
 
 static void test_gll_each() 
 {
+  #ifdef USE_MALLOC
   each_list = gll_init();
   gll_t *list = gll_init();
+  #else
+  gll_t list_s;
+  gll_t *list = gll_init(&list_s);
+  each_list = gll_init(&each_list_s);
+  #endif
 
   each_a = 1;
   each_b = 2;
@@ -453,14 +552,25 @@ static void test_gll_each()
   assert(gll_get(each_list, 1) == &each_b);
   assert(gll_get(each_list, 2) == &each_c);
   
+  #ifdef USE_MALLOC
   gll_destroy(each_list);
   gll_destroy(list);
+  #else
+  gll_clear(each_list);
+  gll_clear(list);
+  #endif
 }
 
 static void test_gll_eachReverse() 
 {
+  #ifdef USE_MALLOC
   each_list = gll_init();
   gll_t *list = gll_init();
+  #else
+  gll_t list_s;
+  gll_t *list = gll_init(&list_s);
+  each_list = gll_init(&each_list_s);
+  #endif
 
   each_a = 1;
   each_b = 2;
@@ -476,13 +586,23 @@ static void test_gll_eachReverse()
   assert(gll_get(each_list, 1) == &each_b);
   assert(gll_get(each_list, 0) == &each_c);
   
+  #ifdef USE_MALLOC
   gll_destroy(each_list);
   gll_destroy(list);
+  #else
+  gll_clear(each_list);
+  gll_clear(list);
+  #endif
 }
 
 static void test_gll_clear() 
 {
+  #ifdef USE_MALLOC
   gll_t *list = gll_init();
+  #else
+  gll_t list_s;
+  gll_t *list = gll_init(&list_s);
+  #endif
   
   char  a = 'A';
   int   b = 15;
@@ -498,5 +618,9 @@ static void test_gll_clear()
   assert(list->first == NULL);
   assert(list->last == NULL);
 
+  #ifdef USE_MALLOC
   gll_destroy(list);
+  #else
+  gll_clear(list);
+  #endif
 }
