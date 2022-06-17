@@ -2,14 +2,21 @@
  * File:     gll.h
  * Author:   Philip Klostermann 
  */
+
+#ifndef GLL_H
+#define GLL_H
+#pragma once
+
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
 
 // #define USE_MALLOC
 
-#ifndef MAX_NODE_POOL_SIZE
-#define MAX_NODE_POOL_SIZE  255
+#ifdef GLL_DONT_USE_MALLOC
+#ifndef GLL_MAX_NODE_POOL_SIZE
+#define GLL_MAX_NODE_POOL_SIZE  255
+#endif
 #endif
 
 /*
@@ -32,7 +39,7 @@ typedef struct {
 
 
 /*  create new list */
-gll_t *gll_init();
+gll_t *gll_init(gll_t *list);
 
 /*  get/find functions */
 void *gll_get(gll_t *, int);
@@ -58,3 +65,4 @@ void gll_eachReverse(gll_t *, void (*f)(void *));
 void gll_clear(gll_t *);
 void gll_destroy(gll_t *);
 
+#endif
