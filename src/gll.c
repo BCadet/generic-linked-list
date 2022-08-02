@@ -50,7 +50,7 @@ static void free_node(gll_node_t *node)
  */
 gll_t *gll_init(gll_t *list)
 {
-#ifndef GLL_DONT_USER_MALLOC
+#ifndef GLL_DONT_USE_MALLOC
     list = (gll_t *)malloc(sizeof(gll_t));
 #else
     if (list == NULL) // list should not be NULL if we don't use malloc
@@ -70,7 +70,7 @@ gll_t *gll_init(gll_t *list)
  */
 static gll_node_t *gll_initNode(void *data)
 {
-#ifndef GLL_DONT_USER_MALLOC
+#ifndef GLL_DONT_USE_MALLOC
     gll_node_t *node = (gll_node_t *)malloc(sizeof(gll_node_t));
 #else
     gll_node_t *node = allocate_node();
