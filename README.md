@@ -1,5 +1,8 @@
-Generic Doubly Linked List
+Generic Doubly Linked List 
 =================
+
+\anchor generic-linked-list
+
 A doubly linked list implementation in C. The list stores (void) pointers to the data. The actual data is never copied, modified or deleted in this implementation. This allows for the same data to be stored in multiple different lists.
 
 ### Features
@@ -100,7 +103,7 @@ make performance
  * [gll_destroy](#anch_gll_destroy)
 
 
-#### __Types__
+#### Types
 ---
 <a name="anch_gll_t"></a>
 ##### *gll_t* - *Generic Linked List Type*
