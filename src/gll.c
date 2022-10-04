@@ -1,6 +1,7 @@
 /*
  * File:      gll.c
  * Author:    Philip Klostermann
+ * Author:    BCadet
  */
 
 #include "gll.h"
