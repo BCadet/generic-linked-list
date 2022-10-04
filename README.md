@@ -73,13 +73,13 @@ FetchContent_MakeAvailable(generic-linked-list)
 
 ###### Tests
 ```
-make tests
-./tests
+make gll-tests
+./gll-tests
 ```
 
 ###### Performance Tests
 ```
-make performance
-./performance
-./performance [number of nodes]
+make gll-performance-test
+./gll-performance-test
+./gll-performance-test [number of nodes]
 ```

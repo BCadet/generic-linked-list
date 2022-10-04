@@ -29,18 +29,18 @@
  * \brief: gll_node_t struct. node of the liked list
  */
 typedef struct node_t {
-  void *data; //! pointer to data stored at node
-  struct node_t *prev; //! pointer to previous nod
-  struct node_t *next; //! pointer to next node
+  void *data; ///< pointer to data stored in node
+  struct node_t *prev; ///< pointer to previous node
+  struct node_t *next; ///< pointer to next node
 } gll_node_t;
 
 /*
  * \brief head of the linked list
  */
 typedef struct {
-  int size; //! number of elements
-  gll_node_t *first; //! pointer to head node
-  gll_node_t *last; //! pointer to tail node
+  int size; ///< number of elements
+  gll_node_t *first; ///< pointer to head node
+  gll_node_t *last; ///< pointer to tail node
 } gll_t;
 
 

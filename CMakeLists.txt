@@ -6,17 +6,19 @@ set(GLL_SRC ${CMAKE_CURRENT_LIST_DIR}/src/gll.c)
 
 add_library(gll ${GLL_SRC})
 
+option(GLL_MALLOC "gll use dynamic allocation" OFF)
+
 if(NOT GLL_MALLOC)
-message(STATUS "[GLL] malloc disabled: gll lib uses static node pool instead")
-if(NOT GLL_POOL_SIZE)
-set(GLL_POOL_SIZE 50)
-message(STATUS "[GLL] Please consider defining the pool size with GLL_POOL_SIZE variable. Using default value...")
-endif()
-message(STATUS "[GLL] gll node pool size defined to ${GLL_POOL_SIZE}.")
-target_compile_definitions(gll PUBLIC
-    GLL_DONT_USE_MALLOC
-    GLL_MAX_NODE_POOL_SIZE=${GLL_POOL_SIZE}
-    )
+    message(STATUS "[GLL] malloc disabled: gll lib uses static node pool instead")
+    if(NOT GLL_POOL_SIZE)
+        set(GLL_POOL_SIZE 50)
+        message(STATUS "[GLL] Please consider defining the pool size with GLL_POOL_SIZE variable. Using default value...")
+    endif()
+    message(STATUS "[GLL] gll node pool size defined to ${GLL_POOL_SIZE}.")
+    target_compile_definitions(gll PUBLIC
+        GLL_DONT_USE_MALLOC
+        GLL_MAX_NODE_POOL_SIZE=${GLL_POOL_SIZE}
+        )
 endif()
 
 add_executable(gll-performance-test ${CMAKE_CURRENT_LIST_DIR}/performance.c)
